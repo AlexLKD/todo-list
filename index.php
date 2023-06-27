@@ -14,11 +14,11 @@
     </header>
     <main class="container">
         <form action="" method="POST">
-            <input type="text" placeholder="task" class="form-txt">
-            <input type="submit" class="form-cta" name="image" value="✔️">
+            <input type="text" name="task" placeholder="task" class="form-txt">
+            <input type="submit" class="form-cta" name="submit" value="✔️">
             <div>
                 <p>à faire avant le :</p>
-                <input type="date">
+                <input type="date" name="due_date">
             </div>
         </form>
 
@@ -38,12 +38,30 @@
                 die('Unable to connect to the database.
                 ' . $e->getMessage());
             }
-            $query = $dbCo->prepare("SELECT text FROM task;");
+
+            if (isset($_POST['submit'])) {
+                $task = $_POST['task'];
+                $dateCreate = date('Y-m-d H:i:s');
+                $query = $dbCo->prepare("INSERT INTO task (text, date_create) VALUES (:text, :date_create)");
+                $query->execute([
+                    ':text' => $task,
+                    ':date_create' => $dateCreate
+                ]);
+            }
+
+            if (isset($_POST['delete'])) {
+                $taskId = $_POST['delete'];
+                $query = $dbCo->prepare("DELETE FROM task WHERE Id_task = :taskId");
+                $query->execute([
+                    ':taskId' => $taskId
+                ]);
+            }
+            $query = $dbCo->prepare("SELECT Id_task, text FROM task;");
             $query->execute();
             $result = $query->fetchAll();
             echo '<ul class"main-nav-list">';
             foreach ($result as $task) {
-                echo '<li class="main-nav-item"> ' . $task['text'] . '</li>';
+                echo '<li class="main-nav-item">' . $task['text'] . '<form action="" method="POST" class="delete-form"><button type="submit" class="delete-button" name="delete" value="' . $task['Id_task'] . '">❌</button></form></li>';
             }
             echo '</ul>';
             ?>
