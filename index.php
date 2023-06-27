@@ -41,9 +41,9 @@
             $query = $dbCo->prepare("SELECT text FROM task;");
             $query->execute();
             $result = $query->fetchAll();
-            echo '<ul>';
+            echo '<ul class"main-nav-list">';
             foreach ($result as $task) {
-                echo '<li class=""> ' . $task['text'] . '</li>';
+                echo '<li class="main-nav-item"> ' . $task['text'] . '</li>';
             }
             echo '</ul>';
             ?>
