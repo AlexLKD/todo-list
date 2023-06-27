@@ -24,25 +24,30 @@
 
         <section>
             <?php
-            $tasks = [
-                ['id' => '1', 'text' => 'task 1', 'date' => '2022-10', 'status' => 1],
-                ['id' => '2', 'text' => 'task 2', 'date' => '2022-15', 'status' => 1],
-                ['id' => '3', 'text' => 'task 3', 'date' => '2022-22', 'status' => 1],
-                ['id' => '4', 'text' => 'task 4', 'date' => '2022-04', 'status' => 1],
-                ['id' => '5', 'text' => 'task 5', 'date' => '2022-11', 'status' => 1],
-                ['id' => '6', 'text' => 'task 6', 'date' => '2022-09', 'status' => 1]
-            ];
-            function createMenu(array $tasks): string
-            {
-                $menu = '<ul class="main-nav-list">';
-                foreach ($tasks as $task) {
-                    $menu .= '<li class=""> ' . $task['text'] . '</li>';
-                }
-                $menu .= '</ul>';
-                return $menu;
+            try {
+                $dbCo = new PDO(
+                    'mysql:host=localhost;dbname=todo-list;charset=utf8',
+                    'phplocal',
+                    'phplocal'
+                );
+                $dbCo->setAttribute(
+                    PDO::ATTR_DEFAULT_FETCH_MODE,
+                    PDO::FETCH_ASSOC
+                );
+            } catch (Exception $e) {
+                die('Unable to connect to the database.
+                ' . $e->getMessage());
             }
+            $query = $dbCo->prepare("SELECT text FROM task;");
+            $query->execute();
+            $result = $query->fetchAll();
+            echo '<ul>';
+            foreach ($result as $task) {
+                echo '<li class=""> ' . $task['text'] . '</li>';
+            }
+            echo '</ul>';
             ?>
-            <?= createMenu($tasks) ?>
+
         </section>
     </main>
 </body>
