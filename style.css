@@ -5,6 +5,7 @@
     --vulcan: #373942;
     --whitesmoke: #f5f5f5;
     --cta: #222e50;
+    --periwinkle: #d4cdf4;
 }
 
 * {
@@ -44,4 +45,19 @@ body {
 .main-ttl {
     text-align: center;
     margin-top: 1rem;
+}
+
+/* FORM  */
+
+.form-txt {
+    height: 2rem;
+    width: 70%;
+    border-radius: 25px;
+}
+
+.form-cta {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 25px;
+    color: #fff;
 }
