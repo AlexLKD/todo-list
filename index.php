@@ -14,52 +14,10 @@ try {
         ' . $e->getMessage());
 }
 
-if (isset($_POST['submit'])) {
-    $task = $_POST['task'];
-    $dateCreate = date('Y-m-d H:i:s');
-    $query = $dbCo->prepare("INSERT INTO task (text, date_create) VALUES (:text, :date_create)");
-    $query->execute([
-        ':text' => strip_tags($task),
-        ':date_create' => $dateCreate
-    ]);
-}
-
-if(array_key_exists('task', $_POST )){
-    echo '<p class="transition" id="message"> message validé </p>';
-}; 
 
 
-if (isset($_GET['delete'])) {
-    $taskId = $_GET['delete'];
-    $query = $dbCo->prepare("DELETE FROM task WHERE Id_task = :taskId");
-    $query->execute([
-        ':taskId' => strip_tags($taskId)
-    ]);
-    if($query -> rowCount()){
-        echo '<p class="transition" id="message"> tache supprimé</p>';
-     } ;
-}
+$messageArray=[ 'create' =>'message validé', 'valide' => 'tache effectué', 'finish' => 'tache supprimé', 'replay' => 'tache invalide'];
 
-if (isset($_GET['validate'])) {
-    $taskId = $_GET['validate'];
-    $query = $dbCo->prepare("UPDATE task SET status = '2' WHERE Id_task = :taskId");
-    $query->execute([
-        ':taskId' => strip_tags($taskId)
-    ]);
-    if($query -> rowCount()){
-        echo '<p class="transition" id="message"> tache effectué</p>';
-     } ;
-}
-if (isset($_GET['invalidate'])) {
-    $taskId = $_GET['invalidate'];
-    $query = $dbCo->prepare("UPDATE task SET status = '1' WHERE Id_task = :taskId");
-    $query->execute([
-        ':taskId' => strip_tags($taskId)
-    ]);
-    if($query -> rowCount()){
-        echo '<p class="transition" id="message"> tache invalide</p>';
-     } ;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,16 +45,19 @@ if (isset($_GET['invalidate'])) {
                 <input type="submit" class="form-cta" name="submit" value="✔️">
             </div>
         </form>
-
+       <?php 
+       if(array_key_exists('msg', $_GET)){
+        echo '<p'.$_GET['msg'].'</p>';       }
+       require 'action.php' ?>
         <section>
             <?php
             $query = $dbCo->prepare("SELECT Id_task, text FROM task WHERE status = '1' ORDER BY date_create ASC");
             $query->execute();
             $result = $query->fetchAll();
-            echo '<h2>à faire</h2><ul class="main-nav-list">';
+            echo '<h2>à faire</h2><ul id="taskList" class="main-nav-list">';
             foreach ($result as $task) {
-                echo '<li class="main-nav-item">' . $task['text'] . ' 
-                <div draggable="true">
+                echo '<li class="main-nav-item" draggable="true" data-taskid=' .$task['Id_task'] .'>' . $task['text'] . ' 
+                <div >
                     <a href="index.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
                     class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
                     <a href="index.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
