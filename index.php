@@ -70,10 +70,10 @@
             $result = $query->fetchAll();
             echo '<ul class="main-nav-list">';
             foreach ($result as $task) {
-                echo '<li class="main-nav-item">' . $task['text'] . '<div>
-                <form class="main-nav-form" action="" method="POST" class="delete-form">                
+                echo '<li class="main-nav-item">' . $task['text'] . '
+                <div class="main-nav-form" action="" method="POST" class="delete-form">                
                 <button type="submit" class="button" name="delete" value="' . $task['Id_task'] . '">✔️</button>                
-                <button type="submit" class="button" name="delete" value="' . $task['Id_task'] . '">❌</button></form> </div></li>';
+                <button type="submit" class="button" name="delete" value="' . $task['Id_task'] . '">❌</button> </div> </li>';
             }
             echo '</ul>';
             ?>
