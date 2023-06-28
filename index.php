@@ -56,12 +56,23 @@
                     ':taskId' => $taskId
                 ]);
             }
-            $query = $dbCo->prepare("SELECT Id_task, text FROM task;");
+
+            if (isset($_POST['validate'])) {
+                $taskId = $_POST['validate'];
+                $query = $dbCo->prepare("UPDATE task SET status = '2' WHERE Id_task = :taskId");
+                $query->execute([
+                    ':taskId' => $taskId
+                ]);
+            }
+
+            $query = $dbCo->prepare("SELECT Id_task, text FROM task WHERE status = '1' ORDER BY date_create ASC");
             $query->execute();
             $result = $query->fetchAll();
-            echo '<ul class"main-nav-list">';
+            echo '<ul class="main-nav-list">';
             foreach ($result as $task) {
-                echo '<li class="main-nav-item">' . $task['text'] . '<form action="" method="POST" class="delete-form"><button type="submit" class="delete-button" name="delete" value="' . $task['Id_task'] . '">❌</button></form></li>';
+                echo '<li class="main-nav-item">' . $task['text'] . '<form action="" method="POST" class="delete-form"><button type="submit" 
+                class="validate-button" name="validate" value="' . $task['Id_task'] . '">✔️<button type="submit" 
+                class="delete-button" name="delete" value="' . $task['Id_task'] . '">❌</button></form></li>';
             }
             echo '</ul>';
             ?>
