@@ -30,6 +30,9 @@ if (isset($_GET['delete'])) {
     $query->execute([
         ':taskId' => strip_tags($taskId)
     ]);
+    if ($query->rowCount()) {
+        echo '<p class="transition" id="message"> La tâche a été supprimée.</p>';
+    };
 }
 
 if (isset($_GET['validate'])) {
@@ -38,6 +41,9 @@ if (isset($_GET['validate'])) {
     $query->execute([
         ':taskId' => strip_tags($taskId)
     ]);
+    if ($query->rowCount()) {
+        echo '<p class="transition" id="message">La tâche a été effectuée.</p>';
+    };
 }
 if (isset($_GET['invalidate'])) {
     $taskId = $_GET['invalidate'];
@@ -76,17 +82,23 @@ if (isset($_GET['invalidate'])) {
 
         <section>
             <?php
+
             $query = $dbCo->prepare("SELECT Id_task, text FROM task WHERE status = '1' ORDER BY date_create ASC");
             $query->execute();
             $result = $query->fetchAll();
             echo '<h2>à faire</h2><ul class="main-nav-list">';
             foreach ($result as $task) {
-                echo '<li class="main-nav-item">' . $task['text'] . ' 
-                <div draggable="true">
-                    <a href="index.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
-                    class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
-                    <a href="index.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
-                    class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a><div>
+                // '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>'
+                // echo '<li class="main-nav-item">' . '<p>' . '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>' . '</p>' . ' 
+                echo '<li class="main-nav-item">' . '<p>' . $task['text'] . '</p>' . ' 
+                    <div draggable="true">
+                        <a href="index.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
+                        class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
+                        <a href="index.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
+                        class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
+                        <button type="button" class="edit-button button" onclick="enableEdit(\'' . $task['Id_task'] . '\')">Edit</button>
+                        
+                    </div>
                 </li>';
             }
             echo '</ul>';
