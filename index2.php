@@ -36,9 +36,8 @@
                 );
             } catch (Exception $e) {
                 die('Unable to connect to the database.
-        ' . $e->getMessage());
+                ' . $e->getMessage());
             }
-
 
             if (isset($_POST['submit'])) {
                 $task = $_POST['task'];
@@ -74,9 +73,9 @@
             foreach ($result as $task) {
                 echo '<li class="main-nav-item">' . $task['text'] . ' 
                     <a href="index.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
-                    class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
+                    class="validate-button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
                     <a href="index.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
-                    class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
+                    class="delete-button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
                 </li>';
             }
             echo '</ul>';
@@ -92,11 +91,10 @@
             echo '<h2>à faire</h2><ul class="main-nav-list">';
             foreach ($result as $task) {
                 echo '<li class="main-nav-item">' . $task['text'] . ' 
-                <div class="main-nav-form" action="" method="POST" class="delete-form">
                     <a href="index.php?validate=' . $task['Id_task'] . '" class="validate-link"></a>
                     <a href="index.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
-                    class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a></div> 
-                    </li>';
+                    class="delete-button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
+                </li>';
             }
             echo '</ul>';
             ?>

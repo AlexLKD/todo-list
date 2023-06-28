@@ -62,15 +62,16 @@ body {
     color: #fff;
 }
 
-.main-nav-list{
+.main-nav-list {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    margin: 1rem 0;
+    gap: 0.5rem;
+    margin: 1rem auto;
+    border: 1px solid red;
 }
 
-.main-nav-item{
+.main-nav-item {
     list-style: none;
     border: 1px black solid;
     width: 60%;
@@ -81,22 +82,20 @@ body {
     padding: 0.5rem 0.5rem 0.5rem 1rem;
 }
 
-.button-img{
+.button-img {
     height: 100%;
     aspect-ratio: 1/1;
 }
 
-.main-nav-button{
+.main-nav-button {
     height: 100%;
 }
 
-
-.button{
+.button {
     height: 40px;
     aspect-ratio: 1/1;
-    /* margin: 0 0.5rem; */
 }
 
-.main-nav-form :first-child{
-    margin-right: 0.5rem;
+.main-nav-form :first-child {
+    margin-right: 0 0.5rem;
 }
