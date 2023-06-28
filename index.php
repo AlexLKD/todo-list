@@ -27,11 +27,6 @@ require 'includes/_database.php'
                 <input type="submit" class="form-cta" name="submit" value="✔️">
             </div>
         </form>
-        <?php
-        if (array_key_exists('msg', $_GET)) {
-            echo '<p>' . $_GET['msg'] . '</p>';
-        }
-        ?>
 
         <section>
             <?php
@@ -40,6 +35,9 @@ require 'includes/_database.php'
             $query->execute();
             $result = $query->fetchAll();
             echo '<h2>à faire</h2><ul class="main-nav-list">';
+            if (array_key_exists('msg', $_GET)) {
+                echo '<p class="task-info">' . $_GET['msg'] . '</p>';
+            }
             foreach ($result as $task) {
                 // '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>'
                 // echo '<li class="main-nav-item">' . '<p>' . '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>' . '</p>' . ' 

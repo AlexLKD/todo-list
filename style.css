@@ -79,7 +79,6 @@ body {
     align-items: center;
     gap: 0.5rem;
     margin: 1rem auto;
-    border: 1px solid red;
 }
 
 .main-nav-item {
@@ -109,4 +108,9 @@ body {
 
 .main-nav-form :first-child {
     margin-right: 0 0.5rem;
+}
+
+.task-info {
+    font-size: 1rem;
+    color: green;
 }

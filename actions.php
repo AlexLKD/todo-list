@@ -31,7 +31,7 @@ if (isset($_GET['delete'])) {
     if ($query->rowCount()) {
         // echo '<p class="transition" id="message"> La tâche a été supprimée.</p>';
     };
-    header('Location: index.php?msg=' . ($isOk ? 'La tâche a été supprimée' : 'La tâche n\'a pas pu être supprimée'));
+    header('Location: tasks-done.php?msg=' . ($isOk ? 'La tâche a été supprimée' : 'La tâche n\'a pas pu être supprimée'));
     exit;
 }
 
