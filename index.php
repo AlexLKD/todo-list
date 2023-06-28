@@ -1,29 +1,10 @@
-<?php
-try {
-    $dbCo = new PDO(
-    'mysql:host=localhost;dbname=todo_list;charset=utf8',
-'phplocal',
-'phplocal'
-);
-$dbCo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,
-PDO::FETCH_ASSOC);
-}
-catch (Exception $e) {
-die('Unable to connect to the database.
-'.$e->getMessage());
-}
-
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"  href="style.css">
     <title>todo-list</title>
 </head>
 
@@ -43,20 +24,20 @@ die('Unable to connect to the database.
 
         <section>
             <?php
-            try {
-                $dbCo = new PDO(
-                    'mysql:host=localhost;dbname=todo-list;charset=utf8',
-                    'phplocal',
-                    'phplocal'
-                );
-                $dbCo->setAttribute(
-                    PDO::ATTR_DEFAULT_FETCH_MODE,
-                    PDO::FETCH_ASSOC
-                );
-            } catch (Exception $e) {
-                die('Unable to connect to the database.
-                ' . $e->getMessage());
-            }
+         try {
+            $dbCo = new PDO(
+            'mysql:host=localhost;dbname=todo_list;charset=utf8',
+        'phplocal',
+        'phplocal'
+        );
+        $dbCo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,
+        PDO::FETCH_ASSOC);
+        }
+        catch (Exception $e) {
+        die('Unable to connect to the database.
+        '.$e->getMessage());
+        }
+        
 
             if (isset($_POST['submit'])) {
                 $task = $_POST['task'];
@@ -78,9 +59,12 @@ die('Unable to connect to the database.
             $query = $dbCo->prepare("SELECT Id_task, text FROM task;");
             $query->execute();
             $result = $query->fetchAll();
-            echo '<ul class"main-nav-list">';
+            echo '<ul class="main-nav-list">';
             foreach ($result as $task) {
-                echo '<li class="main-nav-item">' . $task['text'] . '<form action="" method="POST" class="delete-form"><button type="submit" class="delete-button" name="delete" value="' . $task['Id_task'] . '">❌</button></form></li>';
+                echo '<li class="main-nav-item">' . $task['text'] . '<div>
+                <form class="main-nav-form" action="" method="POST" class="delete-form">                
+                <button type="submit" class="button" name="delete" value="' . $task['Id_task'] . '">✔️</button>                
+                <button type="submit" class="button" name="delete" value="' . $task['Id_task'] . '">❌</button></form> </div></li>';
             }
             echo '</ul>';
             ?>
