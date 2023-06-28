@@ -56,7 +56,16 @@
                     ':taskId' => $taskId
                 ]);
             }
-            $query = $dbCo->prepare("SELECT Id_task, text FROM task;");
+
+            if (isset($_POST['validate'])) {
+                $taskId = $_POST['validate'];
+                $query = $dbCo->prepare("UPDATE task SET status = '2' WHERE Id_task = :taskId");
+                $query->execute([
+                    ':taskId' => $taskId
+                ]);
+            }
+
+            $query = $dbCo->prepare("SELECT Id_task, text FROM task WHERE status = '1' ORDER BY date_create ASC");
             $query->execute();
             $result = $query->fetchAll();
             echo '<ul class="main-nav-list">';
