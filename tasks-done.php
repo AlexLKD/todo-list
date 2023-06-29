@@ -20,6 +20,9 @@ require 'includes/_database.php'
             $query->execute();
             $result = $query->fetchAll();
             echo '<h2>Tâches effectuées</h2><ul class="main-nav-list">';
+            if (array_key_exists('msg', $_GET)) {
+                echo '<p class="task-info">' . $_GET['msg'] . '</p>';
+            }
             foreach ($result as $task) {
                 echo '<li class="main-nav-item">' . $task['text'] . ' 
                 <div>

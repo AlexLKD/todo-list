@@ -27,11 +27,6 @@ require 'includes/_database.php'
                 <input type="submit" class="form-cta" name="submit" value="✔️">
             </div>
         </form>
-        <?php
-        if (array_key_exists('msg', $_GET)) {
-            echo '<p>' . $_GET['msg'] . '</p>';
-        }
-        ?>
 
         <section>
             <?php
@@ -49,7 +44,12 @@ require 'includes/_database.php'
                         class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
                         <a href="actions.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
                         class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
-                        <button type="button" class="edit-button button" onclick="enableEdit(\'' . $task['Id_task'] . '\')">Edit</button>
+                        <form action="actions.php" method="POST" class="update-form">
+                        <input type="hidden" name="update" value="' . $task['Id_task'] . '">
+                        <input type="text" name="new_task" class="task-input" value="' . $task['text'] . '" required>
+                        <button type="submit" class="update-button button">Edit</button>
+</form>
+
                     </div>
                 </li>';
             }
