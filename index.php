@@ -39,19 +39,24 @@ require 'includes/_database.php'
                 echo '<p class="task-info">' . $_GET['msg'] . '</p>';
             }
             foreach ($result as $task) {
-                // '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>'
-                // echo '<li class="main-nav-item">' . '<p>' . '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>' . '</p>' . ' 
-                echo '<li class="main-nav-item">' . '<p>' . $task['text'] . '</p>' . ' 
+                // echo '<li class="main-nav-item">' . '<p>' . $task['text'] . '</p>' . ' 
+                echo '<li class="main-nav-item">' . '<p>' . '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>' . '</p>' . '
                     <div draggable="true">
                         <a href="actions.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
                         class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
                         <a href="actions.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
                         class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
-                        <button type="button" class="edit-button button" onclick="enableEdit(\'' . $task['Id_task'] . '\')">Edit</button>
+                        <form action="actions.php" method="POST" class="update-form">
+                        <input type="hidden" name="update" value="' . $task['Id_task'] . '">
+                        <input type="text" name="new_task" class="task-input" value="' . $task['text'] . '" required>
+                        <button type="submit" class="update-button button">Edit</button>
+</form>
+
                     </div>
                 </li>';
             }
             echo '</ul>';
+            echo '<h2>à faire</h2><ul class="main-nav-list">';
             ?>
             <a href="tasks-done.php"><button type="button">Tasks done</button></a>
         </section>

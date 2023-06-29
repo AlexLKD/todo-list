@@ -66,3 +66,18 @@ if (isset($_GET['invalidate'])) {
     header('Location: index.php?msg=' . ($isOk ? 'La tâche a été invalidée' : 'La tâche est toujours validée'));
     exit;
 }
+
+// Update task
+if (isset($_POST['update'])) {
+    $taskId = $_POST['update'];
+    $newTask = $_POST['new_task'];
+    $query = $dbCo->prepare("UPDATE task SET text = :newTask WHERE Id_task = :taskId");
+    $isOk = $query->execute([
+        ':newTask' => strip_tags($newTask),
+        ':taskId' => strip_tags($taskId)
+    ]);
+    if ($query->rowCount()) {
+    }
+    header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
+    exit;
+}

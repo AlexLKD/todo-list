@@ -2,7 +2,7 @@
 setTimeout(function () {
     var messageElement = document.getElementById("message");
     messageElement.style.display = "none";
-}, 3000)
+}, 3000);
 
 function allowDrop(ev) {
     ev.preventDefault();
