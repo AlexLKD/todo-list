@@ -1,27 +1,5 @@
 <?php
-<<<<<<< HEAD
-try {
-    $dbCo = new PDO(
-        'mysql:host=localhost;dbname=todo_list;charset=utf8',
-        'phplocal',
-        'phplocal'
-    );
-    $dbCo->setAttribute(
-        PDO::ATTR_DEFAULT_FETCH_MODE,
-        PDO::FETCH_ASSOC
-    );
-} catch (Exception $e) {
-    die('Unable to connect to the database.
-        ' . $e->getMessage());
-}
-
-
-
-$messageArray=[ 'create' =>'message validé', 'valide' => 'tache effectué', 'finish' => 'tache supprimé', 'replay' => 'tache invalide'];
-
-=======
 require 'includes/_database.php'
->>>>>>> de533be15d11974387d2df6c59e93157310b6d1f
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,19 +27,12 @@ require 'includes/_database.php'
                 <input type="submit" class="form-cta" name="submit" value="✔️">
             </div>
         </form>
-<<<<<<< HEAD
-       <?php 
-       if(array_key_exists('msg', $_GET)){
-        echo '<p'.$_GET['msg'].'</p>';       }
-       require 'action.php' ?>
-=======
         <?php
         if (array_key_exists('msg', $_GET)) {
             echo '<p>' . $_GET['msg'] . '</p>';
         }
         ?>
 
->>>>>>> de533be15d11974387d2df6c59e93157310b6d1f
         <section>
             <?php
 
@@ -70,28 +41,20 @@ require 'includes/_database.php'
             $result = $query->fetchAll();
             echo '<h2>à faire</h2><ul id="taskList" class="main-nav-list">';
             foreach ($result as $task) {
-<<<<<<< HEAD
-                echo '<li class="main-nav-item" draggable="true" data-taskid=' .$task['Id_task'] .'>' . $task['text'] . ' 
-                <div >
-                    <a href="index.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
-                    class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
-                    <a href="index.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
-                    class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a><div>
-=======
                 // '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>'
                 // echo '<li class="main-nav-item">' . '<p>' . '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>' . '</p>' . ' 
-                echo '<li class="main-nav-item">' . '<p>' . $task['text'] . '</p>' . ' 
-                    <div draggable="true">
+                echo '<li class="main-nav-item" draggable="true" data-taskid=' .$task['Id_task'].'>' . '<p>' . $task['text'] . '</p>' . ' 
+                    <div class ="nav-button">
                         <a href="actions.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
                         class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
                         <a href="actions.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
                         class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
                         <button type="button" class="edit-button button" onclick="enableEdit(\'' . $task['Id_task'] . '\')">Edit</button>
                     </div>
->>>>>>> de533be15d11974387d2df6c59e93157310b6d1f
                 </li>';
             }
             echo '</ul>';
+            
             ?>
             <a href="tasks-done.php"><button type="button">Tasks done</button></a>
         </section>

@@ -16,6 +16,7 @@ const sortableList = document.getElementById("taskList");
         item.addEventListener("dragend", () => {
             item.classList.remove("dragging");
             // updateTaskOrder();
+            console.log('requete asynch => server');
         });
     });
 

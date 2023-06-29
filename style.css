@@ -110,3 +110,8 @@ body {
 .main-nav-form :first-child {
     margin-right: 0 0.5rem;
 }
+
+.nav-button{
+    display: flex;
+    gap: 0.5rem;
+}
