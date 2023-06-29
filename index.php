@@ -30,6 +30,7 @@ require 'includes/_database.php'
 
         <section>
             <?php
+            // <input type="date" name="date_reminder" class="date-input" value="' . $task['date_reminder'] . '">
 
             $query = $dbCo->prepare("SELECT Id_task, text FROM task WHERE status = '1' ORDER BY date_create ASC");
             $query->execute();
@@ -39,7 +40,6 @@ require 'includes/_database.php'
                 echo '<p class="task-info">' . $_GET['msg'] . '</p>';
             }
             foreach ($result as $task) {
-                // echo '<li class="main-nav-item">' . '<p>' . $task['text'] . '</p>' . ' 
                 echo '<li class="main-nav-item">' . '<p>' . '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>' . '</p>' . '
                     <div draggable="true">
                         <a href="actions.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
@@ -50,7 +50,7 @@ require 'includes/_database.php'
                         <input type="hidden" name="update" value="' . $task['Id_task'] . '">
                         <input type="text" name="new_task" class="task-input" value="' . $task['text'] . '" required>
                         <button type="submit" class="update-button button">Edit</button>
-</form>
+                    </form>
 
                     </div>
                 </li>';

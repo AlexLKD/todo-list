@@ -81,3 +81,31 @@ if (isset($_POST['update'])) {
     header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
     exit;
 }
+// if (isset($_POST['update'])) {
+//     $taskId = $_POST['update'];
+//     $newTask = $_POST['new_task'];
+//     $dateReminder = isset($_POST['date_reminder']);
+
+
+//     $query = $dbCo->prepare("UPDATE task SET text = :newTask, date_reminder = :dateReminder WHERE Id_task = :taskId");
+
+//     // Check if there's a reminder date already
+//     if ($dateReminder !== null) {
+//         $query->bindValue(':dateReminder', $dateReminder);
+//     } else {
+//         // If there's no reminder set then ignore 
+//         $query->bindValue(':dateReminder', null, PDO::PARAM_NULL);
+//     }
+
+//     $isOk = $query->execute([
+//         ':newTask' => strip_tags($newTask),
+//         ':taskId' => strip_tags($taskId)
+//     ]);
+
+//     if ($query->rowCount()) {
+//         // La tâche a été mise à jour avec succès
+//     }
+
+//     header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
+//     exit;
+// }
