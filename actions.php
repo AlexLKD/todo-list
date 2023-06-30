@@ -4,12 +4,21 @@ require 'includes/_database.php';
 
 // SUBMIT TASK
 if (isset($_POST['submit'])) {
+    $queryPriority = $dbCo->prepare('SELECT MAX(ranking) + 1 AS newPriority FROM task');
+    $isOk = $queryPriority->execute();
+    $result = $queryPriority->fetch();
+    // var_dump($result);
+    // exit;
+
+    // -----
+
     $task = $_POST['task'];
     $dateCreate = date('Y-m-d H:i:s');
-    $query = $dbCo->prepare("INSERT INTO task (text, date_create) VALUES (:text, :date_create)");
+    $query = $dbCo->prepare("INSERT INTO task (text, date_create, ranking) VALUES (:text, :date_create, :ranking)");
     $isOk = $query->execute([
         ':text' => strip_tags($task),
-        ':date_create' => $dateCreate
+        ':date_create' => $dateCreate,
+        ':ranking' => intval($result['newPriority'])
     ]);
     header('Location: index.php?msg=' . ($isOk ? 'La tâche a été ajoutée' : 'Un problème a été rencontré lors de l\'ajout de la tâche'));
     exit;
@@ -114,3 +123,37 @@ if (isset($_POST['update'])) {
 //     header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
 //     exit;
 // }
+
+//-----------------------------------------------------------
+
+$rankingPlus = $_GET['rank'] + 1;
+$rankingMinus = $_GET['rank'] - 1;
+$ranking = $_GET['rank'];
+
+if (array_key_exists('rank', $_GET) && $_GET['prior'] == 'down') {
+    $query1 = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking = :rank");
+    $isOk1 = $query1->execute([
+        "rank" => intval(strip_tags($ranking))
+    ]);
+
+    $query2 = $dbCo->prepare("UPDATE task SET ranking = ranking + 1 WHERE ranking = :rankMinus AND NOT Id_task = :id");
+    $isOk2 = $query2->execute([
+        "rankMinus" => intval(strip_tags($rankingMinus)),
+        "id" => intval(strip_tags($_GET['id']))
+    ]);
+    header("Location: index.php");
+    exit;
+} else if (array_key_exists('rank', $_GET) && $_GET['prior'] == 'up') {
+    $query3 = $dbCo->prepare("UPDATE task SET ranking = ranking + 1 WHERE ranking = :rank");
+    $isOk3 = $query3->execute([
+        "rank" => intval(strip_tags($ranking))
+    ]);
+
+    $query4 = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking = :rankPlus AND NOT Id_task = :id");
+    $isOk4 = $query4->execute([
+        "rankPlus" => intval(strip_tags($rankingPlus)),
+        "id" => intval(strip_tags($_GET['id']))
+    ]);
+    header("Location: index.php");
+    exit;
+}

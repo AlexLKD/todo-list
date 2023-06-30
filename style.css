@@ -118,3 +118,11 @@ body {
     display: flex;
     gap: 0.5rem;
 }
+
+.hidden {
+    display: none;
+}
+
+.arrow {
+    width: 30px;
+}
