@@ -2,7 +2,7 @@
 
 require 'includes/_database.php';
 
-// submit task
+// SUBMIT TASK
 if (isset($_POST['submit'])) {
     $task = $_POST['task'];
     $dateCreate = date('Y-m-d H:i:s');
@@ -19,8 +19,9 @@ if (array_key_exists('task', $_POST)) {
     // echo '<p class="transition" id="message"> La tâche a été ajoutée. </p>';
 };
 
+//-----------------------------------------------------------
 
-// delete task
+// DELETE TASK
 if (isset($_GET['delete'])) {
     $taskId = $_GET['delete'];
     $query = $dbCo->prepare("DELETE FROM task WHERE Id_task = :taskId");
@@ -35,8 +36,9 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
+//-----------------------------------------------------------
 
-// validate task
+// VALIDATE TASK
 if (isset($_GET['validate'])) {
     $taskId = $_GET['validate'];
     $query = $dbCo->prepare("UPDATE task SET status = '2' WHERE Id_task = :taskId");
@@ -51,8 +53,9 @@ if (isset($_GET['validate'])) {
     exit;
 }
 
+//-----------------------------------------------------------
 
-// invalidate task
+// INVALIDATE TASK
 if (isset($_GET['invalidate'])) {
     $taskId = $_GET['invalidate'];
     $query = $dbCo->prepare("UPDATE task SET status = '1' WHERE Id_task = :taskId");
@@ -66,3 +69,48 @@ if (isset($_GET['invalidate'])) {
     header('Location: index.php?msg=' . ($isOk ? 'La tâche a été invalidée' : 'La tâche est toujours validée'));
     exit;
 }
+
+//-----------------------------------------------------------
+
+// UPDATE TASK
+if (isset($_POST['update'])) {
+    $taskId = $_POST['update'];
+    $newTask = $_POST['new_task'];
+    $query = $dbCo->prepare("UPDATE task SET text = :newTask WHERE Id_task = :taskId");
+    $isOk = $query->execute([
+        ':newTask' => strip_tags($newTask),
+        ':taskId' => strip_tags($taskId)
+    ]);
+    if ($query->rowCount()) {
+    }
+    header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
+    exit;
+}
+// if (isset($_POST['update'])) {
+//     $taskId = $_POST['update'];
+//     $newTask = $_POST['new_task'];
+//     $dateReminder = isset($_POST['date_reminder']);
+
+
+//     $query = $dbCo->prepare("UPDATE task SET text = :newTask, date_reminder = :dateReminder WHERE Id_task = :taskId");
+
+//     // Check if there's a reminder date already
+//     if ($dateReminder !== null) {
+//         $query->bindValue(':dateReminder', $dateReminder);
+//     } else {
+//         // If there's no reminder set then ignore 
+//         $query->bindValue(':dateReminder', null, PDO::PARAM_NULL);
+//     }
+
+//     $isOk = $query->execute([
+//         ':newTask' => strip_tags($newTask),
+//         ':taskId' => strip_tags($taskId)
+//     ]);
+
+//     if ($query->rowCount()) {
+//         // La tâche a été mise à jour avec succès
+//     }
+
+//     header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
+//     exit;
+// }

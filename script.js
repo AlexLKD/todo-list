@@ -1,8 +1,8 @@
 // Temporisation pour masquer le message après 3 secondes
 setTimeout(function () {
-    var messageElement = document.getElementById("message");
+    let messageElement = document.getElementById("message");
     messageElement.style.display = "none";
-}, 3000)
+}, 3000);
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -16,8 +16,4 @@ function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
-}
-
-function setTaskValue(value) {
-    document.getElementById("editTaskInput").value = value;
 }

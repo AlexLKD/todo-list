@@ -85,7 +85,6 @@ body {
     list-style: none;
     border: 1px black solid;
     width: 70%;
-    height: 10vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
