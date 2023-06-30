@@ -1,5 +1,7 @@
 <?php
-require 'includes/_database.php'
+require 'includes/_database.php';
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,30 +33,44 @@ require 'includes/_database.php'
         <section>
             <?php
 
-            $query = $dbCo->prepare("SELECT Id_task, text FROM task WHERE status = '1' ORDER BY date_create ASC");
+            $query = $dbCo->prepare("SELECT priority_task, Id_task,  text FROM task WHERE status = '1' ORDER BY priority_task ASC");
             $query->execute();
             $result = $query->fetchAll();
             echo '<h2>à faire</h2><ul id="taskList" class="main-nav-list">';
-            foreach ($result as $task) {
+            foreach ($result as $index => $task) {
                 // '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>'
                 // echo '<li class="main-nav-item">' . '<p>' . '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>' . '</p>' . ' 
-                echo '<li class="main-nav-item" draggable="true" data-taskid=' .$task['Id_task'].'>' . '<p>' . $task['text'] . '</p>' . ' 
-                    <div class ="nav-button">
+                echo '  <form action="actions.php" method="POST" class="update-form">
+                <input type="hidden" name="updateNumber" value="' . $task['priority_task'] . '">
+                <input type="number" name="new_task" class="task-input" value="' .$task['priority_task']  .'" required>
+                </form>
+
+                <li class="main-nav-item" draggable="true" data-taskid=' . $task['Id_task'] . '>' . '<p>' . $task['text'] . '</p>' . ' 
+                   
+                <div class ="nav-button">
                         <a href="actions.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
                         class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
                         <a href="actions.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
                         class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
                         <form action="actions.php" method="POST" class="update-form">
                         <input type="hidden" name="update" value="' . $task['Id_task'] . '">
-                        <input type="text" name="new_task" class="task-input" value="' . $task['text'] . '" required>
+                        <input type="text" name="new_task" class="task-input" value="' . '" required>
                         <button type="submit" class="update-button button">Edit</button>
-</form>
+                        </form>
+                        
+                        </div>
 
-                    </div>
-                </li>';
+                        
+                         
+                        <a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['priority_task'] . '&prior=down">
+                        UP</a>
+                        
+
+               .</li>'; 
+
             }
             echo '</ul>';
-            
+
             ?>
             <a href="tasks-done.php"><button type="button">Tasks done</button></a>
         </section>
@@ -74,6 +90,9 @@ require 'includes/_database.php'
             //         </li>';
             // }
             // echo '</ul>';
+
+            
+        
             ?>
         </section>
     </main>

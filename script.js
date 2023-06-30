@@ -1,24 +1,54 @@
 // Temporisation pour masquer le message après 3 secondes
-setTimeout(function () {
-    var messageElement = document.getElementById("message");
-    messageElement.style.display = "none";
-}, 3000);
+// setTimeout(function () {
+//     var messageElement = document.getElementById("message");
+//     messageElement.style.display = "none";
+// }, 3000);
 
 
 const sortableList = document.getElementById("taskList");
-    const items = sortableList.querySelectorAll(".main-nav-item");
+const items = sortableList.querySelectorAll(".main-nav-item");
+const URL_ACTIONS = 'actions.php';
 
-    items.forEach(item => {
-        item.addEventListener("dragstart", () => {
-            setTimeout(() => item.classList.add("dragging"), 0);
-        });
-
-        item.addEventListener("dragend", () => {
-            item.classList.remove("dragging");
-            // updateTaskOrder();
-            console.log('requete asynch => server');
-        });
+items.forEach(item => {
+    item.addEventListener("dragstart", () => {
+        setTimeout(() => item.classList.add("dragging"), 0);
     });
+
+    item.addEventListener("dragend", () => {
+        item.classList.remove("dragging");
+        updateTaskOrder();
+        console.log('Requête asynchrone envoyée au serveur');
+    });
+});
+
+function updateTaskOrder() {
+    const taskIds = Array.from(items).map(item => item.dataset.taskid);
+
+    // Create the data object with the taskIds property
+    const data = {
+        taskIds: taskIds
+    };
+    fetch(URL_ACTIONS, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json()) // Parse the response as JSON
+    .then(responseData => {
+        console.log(responseData); // Log the parsed JSON response
+        // Handle the parsed data as needed
+        if (responseData.success) {
+            console.log(responseData.message);
+        } else {
+            console.log("Erreur : " + responseData.message);
+        }
+    })
+    .catch(error => {
+        console.log(error); // Log any errors during the AJAX request
+    });}
+
 
     sortableList.addEventListener("dragover", e => {
         e.preventDefault();
