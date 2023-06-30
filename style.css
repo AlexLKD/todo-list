@@ -84,7 +84,7 @@ body {
 .main-nav-item {
     list-style: none;
     border: 1px black solid;
-    width: 60%;
+    width: 70%;
     height: 10vh;
     display: flex;
     justify-content: space-between;
@@ -113,4 +113,9 @@ body {
 .task-info {
     font-size: 1rem;
     color: green;
+}
+
+.nav-btn {
+    display: flex;
+    gap: 0.5rem;
 }

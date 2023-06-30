@@ -42,7 +42,7 @@ require 'includes/_database.php'
                 // '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>'
                 // echo '<li class="main-nav-item">' . '<p>' . '<input type="text" class="task-input" id="taskInput_' . $task['Id_task'] . '" value="' . $task['text'] . '" disabled>' . '</p>' . ' 
                 echo '<li class="main-nav-item">' . '<p>' . $task['text'] . '</p>' . ' 
-                    <div draggable="true">
+                    <div class ="nav-btn">
                         <a href="actions.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 
                         class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
                         <a href="actions.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
