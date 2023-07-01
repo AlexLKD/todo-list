@@ -84,8 +84,7 @@ body {
 .main-nav-item {
     list-style: none;
     border: 1px black solid;
-    width: 60%;
-    height: 10vh;
+    width: 70%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -117,4 +116,17 @@ body {
 .task-info {
     font-size: 1rem;
     color: green;
+}
+
+.nav-btn {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.arrow {
+    width: 30px;
 }
