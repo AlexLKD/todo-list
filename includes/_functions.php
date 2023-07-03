@@ -59,8 +59,9 @@ function getRecallToday($array) {{
 }}
 
 
+$dt = date('Y-m-d');
 function getRecallFromToday($task ){
-    $dt = date('Y-m-d');
+    global $dt;
     if($task['recall'] === $dt){
         echo '<a href = #taskText_' . $task['Id_task'] .  '><p>' .$task['text'].' </p> </a>' ; }};
 
@@ -70,3 +71,20 @@ function selectTheme($result)
             
          return  $allTheme= array_map(fn($v) => '<option value='.$v.'>'.$v.'</option> '  ,$uniqueTheme);
         };
+
+function getDateText($task){
+    global$dt;
+if($task['recall'] === $dt){
+  return  "aujourd'hui";
+}
+elseif ($task['recall'] === date('Y-m-d+1')){
+    return "demain";
+}
+}
+
+
+// function sortRanking($result){
+//     $arrayTheme = array_map(fn ($task) => $task['ranking'], $result);
+//     var_dump($arrayTheme);
+
+// }

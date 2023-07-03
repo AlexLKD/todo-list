@@ -27,7 +27,7 @@ require 'includes/_database.php'
                 echo '<li class="main-nav-item">' . $task['text'] . ' 
                 <div>
                     <a href="actions.php?invalidate=' . $task['Id_task'] . '" class="invalidate-link"><button type="submit" 
-                    class="invalidate-button button" name="invalidate" value="' . $task['Id_task'] . '">❎</button></a>
+                    class="invalidate-button button" name="invalidate" value="' . $task['Id_task'] . '&rank=' . $task['ranking'] . '">❎</button></a>
                     <a href="actions.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
                     class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a></div> 
                     </li>';
