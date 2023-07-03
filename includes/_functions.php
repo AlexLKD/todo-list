@@ -59,10 +59,6 @@ function getRecallToday($array) {{
 }}
 
 
-
-
-
-
 function getRecallFromToday($task ){
     $dt = date('Y-m-d');
     if($task['recall'] === $dt){
@@ -71,6 +67,6 @@ function getRecallFromToday($task ){
 function selectTheme($result)
         {    $arrayTheme = array_map(fn ($task) => $task['theme'], $result);
             $uniqueTheme = array_unique($arrayTheme);
-            // var_dump($uniqueStyles);
+            
          return  $allTheme= array_map(fn($v) => '<option value='.$v.'>'.$v.'</option> '  ,$uniqueTheme);
         };

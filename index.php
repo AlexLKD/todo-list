@@ -1,7 +1,10 @@
 <?php
 require 'includes/_database.php';
 require 'includes/_functions.php';
-?>
+
+// session_start();
+// $_SESSION['token'] = md5(uniqid(mt_rand(), true))
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,29 +25,26 @@ require 'includes/_functions.php';
             <span class="required">*</span>
             <div class="form-date">
                 <div>
+                    <!-- ici -->
                     <p>Rappel le :</p>
-                    <input type="date" name="due_date">
+                    <!-- <input type="date" name="due_date"> -->
+                    <input type="date" id="recall" name="new_date" >
                 </div>
                 <input type="submit" class="form-cta" name="submit" value="✔️">
+                <input type="hidden" name="token" value="">
+
             </div>
         </form>
 
         <section>
             <a href="tasks-done.php"><button type="button">Tasks done</button></a>
             <?php
-            // <input type="date" name="date_reminder" class="date-input" value="' . $task['date_reminder'] . '">
-            
-            // function getRecallFromToday($task ){
-            //     $dt = date('Y-m-d');
-            //     if($task['recall'] === $dt){
-            //         echo ' <p>' .$task['text'].' </p> ' ; }}
 
                     $query = $dbCo->prepare("SELECT theme ,recall, Id_task, text, ranking FROM task WHERE status = '1' ORDER BY ranking DESC");
                     $query->execute();
-                    $result = $query->fetchAll();
-                //   echo  selectTheme($result);
-              
+                    $result = $query->fetchAll();             
                    
+                    
                     
                     echo '<h2>à faire</h2><ul class="main-nav-list"> ';
                     
@@ -54,7 +54,6 @@ require 'includes/_functions.php';
                     ';
                     
                     echo implode("" ,selectTheme($result));
-                    // il faut que pour chaque valeur, option value doit ajouté
                     echo '</select>';
                     
                      
@@ -62,8 +61,7 @@ require 'includes/_functions.php';
                         echo '<p class="task-info">' . $_GET['msg'] . '</p>';
                     }
                     foreach ($result as $task) {
-                // var_dump(date('Y-m-d'));
-                // exit;
+
                 echo '<li class="main-nav-item">
                         <div class="task-content">
                             <p id="taskText_' . $task['Id_task'] . '">' . $task['text'] . '</p>
@@ -75,11 +73,15 @@ require 'includes/_functions.php';
                             </form>
                         </div>
                         <div>
+                        
                         <form action="actions.php" method="POST" class="update-form">
                         <input type="hidden" name="call" value="' . $task['Id_task'] . '">
                         <input type="date" id="recall" name="new_date" required="" value= "'. $task['recall'] .'" >  
                         <button type="submit" class="update-button button">Call</button>
+                        
                         </form>
+
+
                         </div>
                         <div>
                             <a href="actions.php?validate=' . $task['Id_task'] . '" class="validate-link"><button type="submit" 

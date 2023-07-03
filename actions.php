@@ -1,6 +1,29 @@
 <?php
 
 require 'includes/_database.php';
+session_start();
+
+// $_SESSION;
+
+// $isOk = false;
+// if(!array_key_exists('HTTP_REFERER', $_SERVER) || !str_contains($_SERVER['HTTP_REFERER'], 'http:localhost/intro.php/')){
+//     header('localisation: index.php?msg=error_referer');
+//     exit;
+// }
+// else if (!array_key_exists('token', $_SESSION) || !array_key_exists('token', $_REQUEST) 
+// || $_SESSION['token'] !== $_REQUEST['token']){
+//     header('localisation: index.php?msg=error_csrf');
+//     exit;
+// }
+
+
+// if(!str_contains($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_ORIGIN']))&& str_contains($_SERVER['HTTP_REFERER'], 'http://localhost/intro-php'){
+//     header('localisation: index.php?msg=error_referer');
+//     exit;
+// }
+// if($_REQUEST['action'] === 'add' && $_SERVER['REQUEST_METHOD'] == 'POST'){
+
+// }
 
 // SUBMIT TASK
 if (isset($_POST['submit'])) {
@@ -12,13 +35,17 @@ if (isset($_POST['submit'])) {
 
     // -----
 
+
     $task = $_POST['task'];
+    $newDate = $_POST['new_date'];
     $dateCreate = date('Y-m-d H:i:s');
-    $query = $dbCo->prepare("INSERT INTO task (text, date_create, ranking) VALUES (:text, :date_create, :ranking)");
+    $query = $dbCo->prepare("INSERT INTO task (text, date_create, ranking, recall) VALUES (:text, :date_create, :ranking, :newDate)");
     $isOk = $query->execute([
         ':text' => strip_tags($task),
         ':date_create' => $dateCreate,
-        ':ranking' => intval($result['newPriority'])
+        ':ranking' => intval($result['newPriority']),
+        ':newDate' => strip_tags($newDate),
+    
     ]);
     header('Location: index.php?msg=' . ($isOk ? 'La tâche a été ajoutée' : 'Un problème a été rencontré lors de l\'ajout de la tâche'));
     exit;
@@ -189,10 +216,10 @@ if(isset($_POST['call'])){
     exit;
 }
 
-function getRecallFromToday($task ){
-    $dt = date('Y-m-d');
-    if($task['recall'] === $dt){
-        echo ' <p>' .$task['text'].' </p> ' ; }}
+// function getRecallFromToday($task ){
+//     $dt = date('Y-m-d');
+//     if($task['recall'] === $dt){
+//         echo ' <p>' .$task['text'].' </p> ' ; }}
 
 
 
