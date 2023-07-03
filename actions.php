@@ -39,6 +39,11 @@ if (isset($_GET['delete'])) {
     $isOk = $query->execute([
         ':taskId' => strip_tags($taskId)
     ]);
+    $ranking = $_GET['rank'];
+    $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking > :currentRanking");
+    $isOk = $queryReplace->execute([
+        ':currentRanking' => strip_tags($ranking)
+    ]);
     // message if task is deleted
     if ($query->rowCount()) {
         // echo '<p class="transition" id="message"> La tâche a été supprimée.</p>';
@@ -56,6 +61,11 @@ if (isset($_GET['validate'])) {
     $isOk = $query->execute([
         ':taskId' => strip_tags($taskId)
     ]);
+    $ranking = $_GET['rank'];
+    $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking > :currentRanking");
+    $isOk = $queryReplace->execute([
+        ':currentRanking' => strip_tags($ranking)
+    ]);
     // message if task is validated
     if ($query->rowCount()) {
         // echo '<p class="transition" id="message"> La tâche a été validée. </p>';
@@ -72,6 +82,14 @@ if (isset($_GET['invalidate'])) {
     $query = $dbCo->prepare("UPDATE task SET status = '1' WHERE Id_task = :taskId");
     $isOk = $query->execute([
         ':taskId' => strip_tags($taskId)
+    ]);
+
+    $ranking = $_GET['rank'];
+    $taskId = $_GET['invalidate'];
+    $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking + 1 WHERE ranking >= :currentRanking AND NOT Id_task = :id");
+    $isOk = $queryReplace->execute([
+        ':currentRanking' => strip_tags($ranking),
+        ':id' => intval(strip_tags($taskId))
     ]);
     // message if task is invalidated
     if ($query->rowCount()) {

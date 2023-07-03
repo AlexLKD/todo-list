@@ -1,5 +1,6 @@
 <?php
-require 'includes/_database.php'
+require 'includes/_database.php';
+require 'includes/_functions.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,7 @@ require 'includes/_database.php'
         <section>
             <a href="index.php"><button type="button">Todo list</button></a>
             <?php
-            $query = $dbCo->prepare("SELECT Id_task, text FROM task WHERE status = '2' ORDER BY date_create ASC");
+            $query = $dbCo->prepare("SELECT ranking, Id_task, text FROM task WHERE status = '2' ORDER BY date_create ASC");
             $query->execute();
             $result = $query->fetchAll();
             echo '<h2>Tâches effectuées</h2><ul class="main-nav-list">';
@@ -26,7 +27,7 @@ require 'includes/_database.php'
             foreach ($result as $task) {
                 echo '<li class="main-nav-item">' . $task['text'] . ' 
                 <div>
-                    <a href="actions.php?invalidate=' . $task['Id_task'] . '" class="invalidate-link"><button type="submit" 
+                    <a href="actions.php?invalidate=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '" class="invalidate-link"><button type="submit" 
                     class="invalidate-button button" name="invalidate" value="' . $task['Id_task'] . '">❎</button></a>
                     <a href="actions.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
                     class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a></div> 
