@@ -157,3 +157,42 @@ if (array_key_exists('rank', $_GET) && $_GET['prior'] == 'down') {
     header("Location: index.php");
     exit;
 }
+
+
+// // UPDATE TASK
+// if (isset($_POST['update'])) {
+//     $taskId = $_POST['update'];
+//     $newTask = $_POST['new_task'];
+//     $query = $dbCo->prepare("UPDATE task SET text = :newTask WHERE Id_task = :taskId");
+//     $isOk = $query->execute([
+//         ':newTask' => strip_tags($newTask),
+//         ':taskId' => strip_tags($taskId)
+//     ]);
+//     if ($query->rowCount()) {
+//     }
+//     header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
+//     exit;
+// }
+
+
+if(isset($_POST['call'])){
+    $taskId = $_POST['call'];
+    $newDate = $_POST['new_date'];
+    $query = $dbCo->prepare("UPDATE task SET recall = :newDate WHERE Id_task = :taskId");
+    $isOk = $query->execute([
+        ':newDate' => strip_tags($newDate),
+        ':taskId' => strip_tags($taskId)
+    ]);
+    if ($query->rowCount()) {
+    }
+    header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
+    exit;
+}
+
+function getRecallFromToday($task ){
+    $dt = date('Y-m-d');
+    if($task['recall'] === $dt){
+        echo ' <p>' .$task['text'].' </p> ' ; }}
+
+
+

@@ -79,12 +79,13 @@ body {
     align-items: center;
     gap: 0.5rem;
     margin: 1rem auto;
+    width: 70%;
 }
 
 .main-nav-item {
     list-style: none;
     border: 1px black solid;
-    width: 70%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -129,4 +130,13 @@ body {
 
 .arrow {
     width: 30px;
+}
+
+
+.aside{
+    width: 20%;
+    margin: 0;
+    right: 0;
+    top: 50vh;
+    position: fixed;
 }
