@@ -14,11 +14,13 @@ if (isset($_POST['submit'])) {
 
     $task = $_POST['task'];
     $dateCreate = date('Y-m-d H:i:s');
-    $query = $dbCo->prepare("INSERT INTO task (text, date_create, ranking) VALUES (:text, :date_create, :ranking)");
+    $newDate = $_POST['new_date'];
+    $query = $dbCo->prepare("INSERT INTO task (text, date_create, ranking, recall) VALUES (:text, :date_create, :ranking, :newDate)");
     $isOk = $query->execute([
         ':text' => strip_tags($task),
         ':date_create' => $dateCreate,
-        ':ranking' => intval($result['newPriority'])
+        ':ranking' => intval($result['newPriority']),
+        ':newDate' => $newDate
     ]);
     header('Location: index.php?msg=' . ($isOk ? 'La tâche a été ajoutée' : 'Un problème a été rencontré lors de l\'ajout de la tâche'));
     exit;
@@ -41,7 +43,7 @@ if (isset($_GET['delete'])) {
     if ($query->rowCount()) {
         // echo '<p class="transition" id="message"> La tâche a été supprimée.</p>';
     };
-    header('Location: tasks-done.php?msg=' . ($isOk ? 'La tâche a été supprimée' : 'La tâche n\'a pas pu être supprimée'));
+    header('Location: index.php?msg=' . ($isOk ? 'La tâche a été supprimée' : 'La tâche n\'a pas pu être supprimée'));
     exit;
 }
 
@@ -85,9 +87,11 @@ if (isset($_GET['invalidate'])) {
 if (isset($_POST['update'])) {
     $taskId = $_POST['update'];
     $newTask = $_POST['new_task'];
-    $query = $dbCo->prepare("UPDATE task SET text = :newTask WHERE Id_task = :taskId");
+    $newDate = $_POST['new_date'];
+    $query = $dbCo->prepare("UPDATE task SET text = :newTask, recall = :newDate WHERE Id_task = :taskId");
     $isOk = $query->execute([
         ':newTask' => strip_tags($newTask),
+        ':newDate' => strip_tags($newDate),
         ':taskId' => strip_tags($taskId)
     ]);
     if ($query->rowCount()) {
@@ -95,34 +99,7 @@ if (isset($_POST['update'])) {
     header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
     exit;
 }
-// if (isset($_POST['update'])) {
-//     $taskId = $_POST['update'];
-//     $newTask = $_POST['new_task'];
-//     $dateReminder = isset($_POST['date_reminder']);
 
-
-//     $query = $dbCo->prepare("UPDATE task SET text = :newTask, date_reminder = :dateReminder WHERE Id_task = :taskId");
-
-//     // Check if there's a reminder date already
-//     if ($dateReminder !== null) {
-//         $query->bindValue(':dateReminder', $dateReminder);
-//     } else {
-//         // If there's no reminder set then ignore 
-//         $query->bindValue(':dateReminder', null, PDO::PARAM_NULL);
-//     }
-
-//     $isOk = $query->execute([
-//         ':newTask' => strip_tags($newTask),
-//         ':taskId' => strip_tags($taskId)
-//     ]);
-
-//     if ($query->rowCount()) {
-//         // La tâche a été mise à jour avec succès
-//     }
-
-//     header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
-//     exit;
-// }
 
 //-----------------------------------------------------------
 
@@ -157,42 +134,3 @@ if (array_key_exists('rank', $_GET) && $_GET['prior'] == 'down') {
     header("Location: index.php");
     exit;
 }
-
-
-// // UPDATE TASK
-// if (isset($_POST['update'])) {
-//     $taskId = $_POST['update'];
-//     $newTask = $_POST['new_task'];
-//     $query = $dbCo->prepare("UPDATE task SET text = :newTask WHERE Id_task = :taskId");
-//     $isOk = $query->execute([
-//         ':newTask' => strip_tags($newTask),
-//         ':taskId' => strip_tags($taskId)
-//     ]);
-//     if ($query->rowCount()) {
-//     }
-//     header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
-//     exit;
-// }
-
-
-if(isset($_POST['call'])){
-    $taskId = $_POST['call'];
-    $newDate = $_POST['new_date'];
-    $query = $dbCo->prepare("UPDATE task SET recall = :newDate WHERE Id_task = :taskId");
-    $isOk = $query->execute([
-        ':newDate' => strip_tags($newDate),
-        ':taskId' => strip_tags($taskId)
-    ]);
-    if ($query->rowCount()) {
-    }
-    header("Location: index.php?msg=" . ($isOk ? 'Tâche mise à jour' : 'Impossible de mettre à jour'));
-    exit;
-}
-
-function getRecallFromToday($task ){
-    $dt = date('Y-m-d');
-    if($task['recall'] === $dt){
-        echo ' <p>' .$task['text'].' </p> ' ; }}
-
-
-
