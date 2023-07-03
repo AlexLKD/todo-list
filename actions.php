@@ -1,5 +1,15 @@
 <?php
 
+// session_start();
+// if (!(array_key_exists('HTTP_REFERER', $_SERVER)) && str_contains($_SERVER['HTTP_REFERER'], $_ENV["URL"])) {
+//     header('Location: index.php?msg=error_referer');
+//     exit;
+// } else if (!array_key_exists('token', $_SESSION) || !array_key_exists('token', $_REQUEST) || $_SESSION['token'] !== $_REQUEST["token"]) {
+//     //...
+//     header('Location: index.php?msg=error_csrf');
+//     exit;
+// }
+
 require 'includes/_database.php';
 
 // SUBMIT TASK
@@ -37,12 +47,12 @@ if (isset($_GET['delete'])) {
     $taskId = $_GET['delete'];
     $query = $dbCo->prepare("DELETE FROM task WHERE Id_task = :taskId");
     $isOk = $query->execute([
-        ':taskId' => strip_tags($taskId)
+        ':taskId' => intval(strip_tags($taskId))
     ]);
     $ranking = $_GET['rank'];
     $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking > :currentRanking");
     $isOk = $queryReplace->execute([
-        ':currentRanking' => strip_tags($ranking)
+        ':currentRanking' => intval(strip_tags($ranking))
     ]);
     // message if task is deleted
     if ($query->rowCount()) {
@@ -59,12 +69,12 @@ if (isset($_GET['validate'])) {
     $taskId = $_GET['validate'];
     $query = $dbCo->prepare("UPDATE task SET status = '2' WHERE Id_task = :taskId");
     $isOk = $query->execute([
-        ':taskId' => strip_tags($taskId)
+        ':taskId' => intval(strip_tags($taskId))
     ]);
     $ranking = $_GET['rank'];
     $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking > :currentRanking");
     $isOk = $queryReplace->execute([
-        ':currentRanking' => strip_tags($ranking)
+        ':currentRanking' => strip_tags(intval($ranking))
     ]);
     // message if task is validated
     if ($query->rowCount()) {
@@ -81,14 +91,14 @@ if (isset($_GET['invalidate'])) {
     $taskId = $_GET['invalidate'];
     $query = $dbCo->prepare("UPDATE task SET status = '1' WHERE Id_task = :taskId");
     $isOk = $query->execute([
-        ':taskId' => strip_tags($taskId)
+        ':taskId' => intval(strip_tags($taskId))
     ]);
 
     $ranking = $_GET['rank'];
     $taskId = $_GET['invalidate'];
     $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking + 1 WHERE ranking >= :currentRanking AND NOT Id_task = :id");
     $isOk = $queryReplace->execute([
-        ':currentRanking' => strip_tags($ranking),
+        ':currentRanking' => intval(strip_tags($ranking)),
         ':id' => intval(strip_tags($taskId))
     ]);
     // message if task is invalidated
@@ -110,7 +120,7 @@ if (isset($_POST['update'])) {
     $isOk = $query->execute([
         ':newTask' => strip_tags($newTask),
         ':newDate' => strip_tags($newDate),
-        ':taskId' => strip_tags($taskId)
+        ':taskId' => intval(strip_tags($taskId))
     ]);
     if ($query->rowCount()) {
     }

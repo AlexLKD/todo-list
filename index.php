@@ -2,8 +2,13 @@
 require 'includes/_database.php';
 require 'includes/_functions.php';
 
+
 session_start();
+
 $_SESSION['token'] = md5(uniqid(mt_rand(), true));
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +26,7 @@ $_SESSION['token'] = md5(uniqid(mt_rand(), true));
     </header>
     <main class="container">
         <form action="actions.php" method="POST">
+            <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
             <input type="text" name="task" placeholder="task" class="form-txt" required>
             <span class="required">*</span>
             <div class="form-date">
@@ -67,6 +73,7 @@ $_SESSION['token'] = md5(uniqid(mt_rand(), true));
             foreach ($result as $task) {
                 // var_dump(date('Y-m-d'));
                 // exit;
+
                 echo '<div class="task-container">
                 <li class="main-nav-item">
                         <div class="task-content">
@@ -86,6 +93,7 @@ $_SESSION['token'] = md5(uniqid(mt_rand(), true));
                             class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
                         </div>
                         </li>
+                        
                         <div><a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&prior=down"><img class="arrow" src="img/down.png" alt="down"></a>
                         <a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&prior=up"><img class="arrow" src="img/up.png" alt="up"></a></div>
                         </div>';
