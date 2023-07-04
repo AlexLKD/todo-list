@@ -3,28 +3,27 @@
 require 'includes/_database.php';
 session_start();
 
-// $_SESSION;
+$_SESSION;
 
-// $isOk = false;
-// if(!array_key_exists('HTTP_REFERER', $_SERVER) || !str_contains($_SERVER['HTTP_REFERER'], 'http:localhost/intro.php/')){
-//     header('localisation: index.php?msg=error_referer');
-//     exit;
-// }
-// else if (!array_key_exists('token', $_SESSION) || !array_key_exists('token', $_REQUEST) 
-// || $_SESSION['token'] !== $_REQUEST['token']){
-//     header('localisation: index.php?msg=error_csrf');
-//     exit;
-// }
+$isOk = false;
+if(!array_key_exists('HTTP_REFERER', $_SERVER) || !str_contains($_SERVER['HTTP_REFERER'], 'http://localhost/todo-list/index.php')){
+    header('localisation: index.php?msg=error_referer');
+    exit;
+}
+else if (!array_key_exists('token', $_SESSION) || !array_key_exists('token', $_REQUEST) 
+|| $_SESSION['token'] !== $_REQUEST['token']){
+    header('localisation: index.php?msg=error_csrf');
+    exit;
+};
 
 
-// if(!str_contains($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_ORIGIN']))&& str_contains($_SERVER['HTTP_REFERER'], 'http://localhost/intro-php'){
+// if(!str_contains($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_ORIGIN'])) && str_contains($_SERVER['HTTP_REFERER'], 'http://localhost/intro-php'){
 //     header('localisation: index.php?msg=error_referer');
 //     exit;
 // }
 // if($_REQUEST['action'] === 'add' && $_SERVER['REQUEST_METHOD'] == 'POST'){
 
 // }
-
 // SUBMIT TASK
 if (isset($_POST['submit'])) {
     $queryPriority = $dbCo->prepare('SELECT MAX(ranking) + 1 AS newPriority FROM task');
@@ -35,9 +34,7 @@ if (isset($_POST['submit'])) {
 
     // -----
 
-
     $task = $_POST['task'];
-    $newDate = $_POST['new_date'];
     $dateCreate = date('Y-m-d H:i:s');
     $newDate = $_POST['new_date'];
     $query = $dbCo->prepare("INSERT INTO task (text, date_create, ranking, recall) VALUES (:text, :date_create, :ranking, :newDate)");
@@ -64,10 +61,10 @@ if (isset($_GET['delete'])) {
     $isOk = $query->execute([
         ':taskId' => strip_tags($taskId)
     ]);
-    $taskRanking = $_GET['rank'];
-    $query = $dbCo->prepare("UPDATE task SET ranking = ranking -1 WHERE ranking > :ranking");
-    $isOk = $query->execute([
-        ':ranking' => strip_tags($taskRanking)
+    $ranking = $_GET['rank'];
+    $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking > :currentRanking");
+    $isOk = $queryReplace->execute([
+        ':currentRanking' => strip_tags($ranking)
     ]);
     // message if task is deleted
     if ($query->rowCount()) {
@@ -86,13 +83,11 @@ if (isset($_GET['validate'])) {
     $isOk = $query->execute([
         ':taskId' => strip_tags($taskId)
     ]);
-
-    $taskRanking = $_GET['rank'];
-    $query = $dbCo->prepare("UPDATE task SET ranking = ranking -1 WHERE ranking > :ranking");
-    $isOk = $query->execute([
-        ':ranking' => strip_tags($taskRanking)
+    $ranking = $_GET['rank'];
+    $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking > :currentRanking");
+    $isOk = $queryReplace->execute([
+        ':currentRanking' => strip_tags($ranking)
     ]);
-
     // message if task is validated
     if ($query->rowCount()) {
         // echo '<p class="transition" id="message"> La tâche a été validée. </p>';
@@ -110,11 +105,13 @@ if (isset($_GET['invalidate'])) {
     $isOk = $query->execute([
         ':taskId' => strip_tags($taskId)
     ]);
-    
-    $taskRanking = $_GET['rank'];
-    $query = $dbCo->prepare("UPDATE task SET ranking = ranking -1 WHERE ranking > :ranking");
-    $isOk = $query->execute([
-        ':ranking' => strip_tags($taskRanking)
+
+    $ranking = $_GET['rank'];
+    $taskId = $_GET['invalidate'];
+    $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking + 1 WHERE ranking >= :currentRanking AND NOT Id_task = :id");
+    $isOk = $queryReplace->execute([
+        ':currentRanking' => strip_tags($ranking),
+        ':id' => intval(strip_tags($taskId))
     ]);
     // message if task is invalidated
     if ($query->rowCount()) {
@@ -150,8 +147,6 @@ $rankingPlus = $_GET['rank'] + 1;
 $rankingMinus = $_GET['rank'] - 1;
 $ranking = $_GET['rank'];
 
-
-
 if (array_key_exists('rank', $_GET) && $_GET['prior'] == 'down') {
     $query1 = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking = :rank");
     $isOk1 = $query1->execute([
@@ -178,6 +173,4 @@ if (array_key_exists('rank', $_GET) && $_GET['prior'] == 'down') {
     ]);
     header("Location: index.php");
     exit;
-};
-
-
+}
