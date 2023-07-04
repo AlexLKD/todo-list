@@ -54,9 +54,14 @@ body {
 
 /* FORM  */
 
+.form-submit {
+    width: 50%;
+    margin-left: 2rem;
+}
+
 .form-txt {
     height: 2rem;
-    width: 70%;
+    width: 100%;
     border-radius: 25px;
 }
 
@@ -140,7 +145,8 @@ body {
 }
 
 .aside {
-    width: 10%;
+    width: 20%;
+    /* display: flex; */
     margin: 0;
     right: 1%;
     top: 50vh;
@@ -150,6 +156,11 @@ body {
 .task-container {
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 1rem;
+}
+.arrow-div {
+    display: flex;
+    flex-direction: column;
 }
