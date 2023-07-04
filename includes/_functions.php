@@ -3,7 +3,6 @@ function selectTheme($result)
 {
     $arrayTheme = array_map(fn ($task) => $task['theme'], $result);
     $uniqueTheme = array_unique($arrayTheme);
-    // var_dump($uniqueStyles);
     return  $allTheme = array_map(fn ($v) => '<option value=' . $v . '>' . $v . '</option> ', $uniqueTheme);
 };
 
@@ -21,22 +20,6 @@ function getRecallToday($array)
                 echo  getRecallFromToday($task);
             };
             echo '</aside>';
-            // return $html;
         }
-    }
-}
-
-
-function displayArrows($taskId, $ranking, $taskCount)
-{
-    if ($ranking == 1) {
-        return '<div><img class="arrow" src="img/up.png" alt="up"></div>';
-    } elseif ($ranking == $taskCount) {
-        return '<div><img class="arrow" src="img/down.png" alt="down"></div>';
-    } else {
-        return '<div>
-                    <a href="actions.php?id=' . $taskId . '&rank=' . $ranking . '&prior=down"><img class="arrow" src="img/down.png" alt="down"></a>
-                    <a href="actions.php?id=' . $taskId . '&rank=' . $ranking . '&prior=up"><img class="arrow" src="img/up.png" alt="up"></a>
-                </div>';
     }
 }

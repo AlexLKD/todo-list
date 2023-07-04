@@ -2,12 +2,8 @@
 require 'includes/_database.php';
 require 'includes/_functions.php';
 
-
 session_start();
-
 $_SESSION['token'] = md5(uniqid(mt_rand(), true));
-
-
 
 ?>
 <!DOCTYPE html>
@@ -25,8 +21,8 @@ $_SESSION['token'] = md5(uniqid(mt_rand(), true));
         <h1 class="main-ttl">Todo-list</h1>
     </header>
     <main class="container">
-        <form action="actions.php" method="POST">
-            <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
+        <form action="actions.php" method="POST" class="form-submit">
+            <input type="hidden" name="token" value="<?= $_SESSION['token'] ?? '' ?>">
             <input type="text" name="task" placeholder="task" class="form-txt" required>
             <span class="required">*</span>
             <div class="form-date">
@@ -37,23 +33,16 @@ $_SESSION['token'] = md5(uniqid(mt_rand(), true));
                 <input type="submit" class="form-cta" name="submit" value="✔️">
             </div>
         </form>
+        <?php
 
+        $query = $dbCo->prepare("SELECT theme ,recall, Id_task, text, ranking FROM task WHERE status = '1' ORDER BY ranking DESC");
+        $query->execute();
+        $result = $query->fetchAll();
+
+        ?>
         <section>
             <a href="tasks-done.php"><button type="button">Tasks done</button></a>
             <?php
-            // <input type="date" name="date_reminder" class="date-input" value="' . $task['date_reminder'] . '">
-
-            // function getRecallFromToday($task ){
-            //     $dt = date('Y-m-d');
-            //     if($task['recall'] === $dt){
-            //         echo ' <p>' .$task['text'].' </p> ' ; }}
-
-            $query = $dbCo->prepare("SELECT theme ,recall, Id_task, text, ranking FROM task WHERE status = '1' ORDER BY ranking DESC");
-            $query->execute();
-            $result = $query->fetchAll();
-            //   echo  selectTheme($result);
-
-
 
             echo '<h2>à faire</h2>';
 
@@ -76,34 +65,34 @@ $_SESSION['token'] = md5(uniqid(mt_rand(), true));
                             <div class="task-content">
                                 <p id="taskText_' . $task['Id_task'] . '">' . $task['text'] . '</p>
                                 <form action="actions.php" method="POST" class="update-form hidden">
-                                    <input type="hidden" name="update" value="' . $task['Id_task'] . '">
+                                <input type="hidden" name="token" value="' . $_SESSION['token'] . '">
+                                <input type="hidden" name="update" value="' . $task['Id_task'] . '">
                                     <input type="text" name="new_task" class="task-input" value="' . $task['text'] . '" required>
                                     <input type="date" id="recall_' . $task['Id_task'] . '" name="new_date" class="" value="' . $task['recall'] . '">
-                                    <button type="submit" class="update-button button">Save</button>
+                                    <button type="submit" class="update-button button" value ="' . '">Save</button>
                                 </form>
-                                <button type="button" class="edit-button button" data-task-id="' . $task['Id_task'] . '">Edit</button>
+                                <button type="button" class="edit-button button" value="' . '"data-task-id="' . $task['Id_task'] . '">Edit</button>
                             </div>
                             <div>
-                                <a href="actions.php?validate=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '" class="validate-link"><button type="submit" 
+                                <a href="actions.php?validate=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '" class="validate-link"><button type="submit" 
                                     class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
-                                <a href="actions.php?delete=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '" class="delete-link"><button type="submit" 
+                                <a href="actions.php?delete=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '" class="delete-link"><button type="submit" 
                                     class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
                             </div>
                         </li>
-                        <div>';
-                if ($task['ranking'] == 0) {
-                    echo '<a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&prior=up"><img class="arrow" src="img/up.png" alt="up"></a>';
-                } elseif ($task['ranking'] == count($result) - 1) {
-                    echo '<a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&prior=down"><img class="arrow" src="img/down.png" alt="down"></a>';
+                        <div class="arrow-div">';
+                if ($task['ranking'] == 1) {
+                    echo '<a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '&prior=up"><img class="arrow" src="img/up.png" alt="up"></a>';
+                } elseif ($task['ranking'] == count($result)) {
+                    echo '<a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '&prior=down"><img class="arrow" src="img/down.png" alt="down"></a>';
                 } else {
-                    echo '<a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&prior=down"><img class="arrow" src="img/down.png" alt="down"></a>';
-                    echo '<a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&prior=up"><img class="arrow" src="img/up.png" alt="up"></a>';
+                    echo '<a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '&prior=up"><img class="arrow" src="img/up.png" alt="up"></a>';
+                    echo '<a href="actions.php?id=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '&prior=down"><img class="arrow" src="img/down.png" alt="down"></a>';
                 }
                 echo '</div>
                     </div>';
             }
             echo '</ul>';
-
             getRecallToday($result)
             ?>
         </section>

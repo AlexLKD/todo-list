@@ -1,6 +1,9 @@
 <?php
 require 'includes/_database.php';
 require 'includes/_functions.php';
+
+session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,9 +30,9 @@ require 'includes/_functions.php';
             foreach ($result as $task) {
                 echo '<li class="main-nav-item">' . $task['text'] . ' 
                 <div>
-                    <a href="actions.php?invalidate=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '" class="invalidate-link"><button type="submit" 
+                    <a href="actions.php?invalidate=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '" class="invalidate-link"><button type="submit" 
                     class="invalidate-button button" name="invalidate" value="' . $task['Id_task'] . '">❎</button></a>
-                    <a href="actions.php?delete=' . $task['Id_task'] . '" class="delete-link"><button type="submit" 
+                    <a href="actions.php?delete=' . $task['Id_task'] . '&token=' . $_SESSION['token'] . '" class="delete-link"><button type="submit" 
                     class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a></div> 
                     </li>';
             }
