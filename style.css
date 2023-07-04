@@ -33,11 +33,9 @@ body {
     color: var(--vulcan);
     background-color: var(--whitesmoke);
     font-size: 0.75rem;
-    background-image: url(img/Notebook\ Blank\ Page\ Participants\ List\ Poster\ \(1\).png) ;
+    background-image: url(img/background.png);
     background-repeat: no-repeat;
     background-size: cover;
-    /* background-attachment: fixed; */
-
 }
 
 .container {
@@ -141,17 +139,14 @@ body {
 
 .arrow {
     width: 30px;
-    border: 1px black solid;
 }
 
 .aside {
     width: 20%;
-    /* display: flex; */
     margin: 0;
     right: 1%;
     top: 50vh;
     position: fixed;
-
 }
 .task-container {
     display: flex;

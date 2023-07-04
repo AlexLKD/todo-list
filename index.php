@@ -74,11 +74,11 @@ $_SESSION['token'] = md5(uniqid(mt_rand(), true));
                                 <button type="button" class="edit-button button" value="' . '"data-task-id="' . $task['Id_task'] . '">Edit</button>
                             </div>
                             <div>
-                            <p> '.getDateText($task) .'</p>
-                                <a href="actions.php?validate=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '" class="validate-link"><button type="submit" 
-                                    class="validate-button button" name="validate" value="' . $task['Id_task'] . '">✔️</button></a>
-                                <a href="actions.php?delete=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '" class="delete-link"><button type="submit" 
-                                    class="delete-button button" name="delete" value="' . $task['Id_task'] . '">❌</button></a>
+                            <p> ' . getDateText($task) . '</p>
+                                <button type="submit" class="validate-button button" name="validate" value="' . $task['Id_task'] . '">
+                                <a href="actions.php?validate=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '" class="validate-link">✔️</a></button>
+                                <button type="submit" class="delete-button button" name="delete" value="' . $task['Id_task'] . '">
+                                <a href="actions.php?delete=' . $task['Id_task'] . '&rank=' . $task['ranking'] . '&token=' . $_SESSION['token'] . '" class="delete-link">❌</a></button>
                             </div>
                         </li>
                         <div class="arrow-div">';
