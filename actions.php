@@ -82,25 +82,25 @@ if (isset($_GET['delete'])) {
 
 //-----------------------------------------------------------
 
-// VALIDATE TASK
-if (isset($_GET['validate'])) {
-    $taskId = $_GET['validate'];
-    $query = $dbCo->prepare("UPDATE task SET status = '2' WHERE Id_task = :taskId");
-    $isOk = $query->execute([
-        ':taskId' => intval(strip_tags($taskId))
-    ]);
-    $ranking = $_GET['rank'];
-    $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking > :currentRanking");
-    $isOk = $queryReplace->execute([
-        ':currentRanking' => strip_tags(intval($ranking))
-    ]);
-    // message if task is validated
-    if ($query->rowCount()) {
-        // echo '<p class="transition" id="message"> La tâche a été validée. </p>';
-    };
-    header('Location: index.php?msg=' . ($isOk ? 'La tâche a été validée' : 'Un problème est survenu lors de la validation'));
-    exit;
-}
+// // VALIDATE TASK
+// if (isset($_GET['validate'])) {
+//     // $taskId = $_GET['validate'];
+//     // $query = $dbCo->prepare("UPDATE task SET status = '2' WHERE Id_task = :taskId");
+//     // $isOk = $query->execute([
+//     //     ':taskId' => intval(strip_tags($taskId))
+//     // ]);
+//     $ranking = $_GET['rank'];
+//     $queryReplace = $dbCo->prepare("UPDATE task SET ranking = ranking - 1 WHERE ranking > :currentRanking");
+//     $isOk = $queryReplace->execute([
+//         ':currentRanking' => strip_tags(intval($ranking))
+//     ]);
+//     // message if task is validated
+//     if ($query->rowCount()) {
+//         // echo '<p class="transition" id="message"> La tâche a été validée. </p>';
+//     };
+//     header('Location: index.php?msg=' . ($isOk ? 'La tâche a été validée' : 'Un problème est survenu lors de la validation'));
+//     exit;
+// }
 
 //-----------------------------------------------------------
 
